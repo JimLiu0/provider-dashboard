@@ -139,87 +139,117 @@ export default function PatientTable() {
 
   return (
     <>
-      <div className="flex items-center gap-4 mt-4">
-        <select
-          className="border px-3 py-2 rounded"
-          value={filterField}
-          onChange={e => {
-            const field = e.target.value
-            setFilterField(field)
-            setOperator(field === 'age' ? '>=' : 'contains')
-            setFilterValue('')
-          }}
-        >
-          <option value="all">All Fields</option>
-          <option value="first_name">First Name</option>
-          <option value="last_name">Last Name</option>
-          <option value="street_address">Street Address</option>
-          <option value="city">City</option>
-          <option value="state">State</option>
-          <option value="status">Status</option>
-          <option value="notes">Notes</option>
-          <option value="age">Age</option>
-        </select>
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Patient Records</h2>
+        <div className="flex items-center gap-4 mb-6">
+          <select
+            className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            value={filterField}
+            onChange={e => {
+              const field = e.target.value
+              setFilterField(field)
+              setOperator(field === 'age' ? '>=' : 'contains')
+              setFilterValue('')
+            }}
+          >
+            <option value="all">All Fields</option>
+            <option value="first_name">First Name</option>
+            <option value="last_name">Last Name</option>
+            <option value="street_address">Street Address</option>
+            <option value="city">City</option>
+            <option value="state">State</option>
+            <option value="status">Status</option>
+            <option value="notes">Notes</option>
+            <option value="age">Age</option>
+          </select>
 
-        <select
-          className="border px-3 py-2 rounded"
-          value={operator}
-          onChange={e => setOperator(e.target.value)}
-        >
-          {filterField === 'age' ? (
-            <>
-              <option value="=">=</option>
-              <option value=">=">&ge;</option>
-              <option value="<=">&le;</option>
-            </>
-          ) : (
-            <>
-              <option value="contains">contains</option>
-              <option value="equals">equals</option>
-            </>
-          )}
-        </select>
+          <select
+            className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            value={operator}
+            onChange={e => setOperator(e.target.value)}
+          >
+            {filterField === 'age' ? (
+              <>
+                <option value="=">=</option>
+                <option value=">=">&ge;</option>
+                <option value="<=">&le;</option>
+              </>
+            ) : (
+              <>
+                <option value="contains">contains</option>
+                <option value="equals">equals</option>
+              </>
+            )}
+          </select>
 
-        <input
-          type={filterField === 'age' ? 'number' : 'text'}
-          className="border px-3 py-2 rounded flex-1"
-          placeholder={`Enter ${filterField === 'age' ? 'age' : 'value'}...`}
-          value={filterValue}
-          onChange={e => setFilterValue(e.target.value)}
-        />
+          <input
+            type={filterField === 'age' ? 'number' : 'text'}
+            className="border border-gray-300 rounded-lg px-3 py-2 text-sm flex-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder={`Enter ${filterField === 'age' ? 'age' : 'value'}...`}
+            value={filterValue}
+            onChange={e => setFilterValue(e.target.value)}
+          />
+        </div>
       </div>
-      <table className="mt-6 w-full border">
-        <thead>
-          {table.getHeaderGroups().map(headerGroup => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map(header => (
-                <th
-                  key={header.id}
-                  className="border px-4 py-2 bg-gray-100 cursor-pointer select-none"
-                  onClick={header.column.getToggleSortingHandler()}
+      
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full table-fixed">
+            <thead className="bg-gray-50 border-b border-gray-200">
+              {table.getHeaderGroups().map(headerGroup => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map(header => (
+                    <th
+                      key={header.id}
+                      className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors duration-200"
+                      style={{
+                        width: header.id === 'notes' ? '200px' : 
+                               header.id === 'street_address' ? '150px' :
+                               header.id === 'first_name' || header.id === 'last_name' ? '120px' :
+                               header.id === 'city' || header.id === 'state' ? '100px' :
+                               header.id === 'zip_code' ? '80px' :
+                               header.id === 'status' ? '100px' :
+                               header.id === 'created_at' ? '100px' :
+                               header.id === 'date_of_birth' ? '80px' : 'auto'
+                      }}
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
+                      <div className="flex items-center gap-2">
+                        {flexRender(header.column.columnDef.header, header.getContext())}
+                        {{
+                          asc: ' 🔼',
+                          desc: ' 🔽',
+                        }[header.column.getIsSorted() as string] ?? ''}
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {table.getRowModel().rows.map((row, index) => (
+                <tr 
+                  key={row.id} 
+                  className={`hover:bg-gray-50 transition-colors duration-200 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}
                 >
-                  {flexRender(header.column.columnDef.header, header.getContext())}
-                  {{
-                    asc: ' 🔼',
-                    desc: ' 🔽',
-                  }[header.column.getIsSorted() as string] ?? ''}
-                </th>
+                  {row.getVisibleCells().map(cell => (
+                    <td key={cell.id} className="px-6 py-4 text-sm text-gray-900">
+                      <div className="max-w-xs break-words">
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </div>
+                    </td>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map(row => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map(cell => (
-                <td key={cell.id} className="border px-4 py-2">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+            </tbody>
+          </table>
+        </div>
+        {filteredPatients.length === 0 && (
+          <div className="text-center py-12 text-gray-500">
+            {filterValue ? 'No patients match your search criteria.' : 'No patients found.'}
+          </div>
+        )}
+      </div>
     </>
   )
 }
