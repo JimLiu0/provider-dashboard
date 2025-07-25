@@ -13,10 +13,12 @@ export default function AddPatientModal({
   isOpen,
   onClose,
   onSuccess,
+  refreshPatients,
 }: {
   isOpen: boolean
   onClose: () => void
   onSuccess: () => void // callback to refresh table
+  refreshPatients: () => void
 }) {
   const {
     register,
@@ -38,6 +40,7 @@ export default function AddPatientModal({
     if (!error) {
       toast.success('Patient added!')
       onSuccess()
+      refreshPatients()
       reset()
       onClose()
     } else {
@@ -247,6 +250,7 @@ export default function AddPatientModal({
                 if (!error) {
                   toast.success('Patient added!')
                   onSuccess()
+                  refreshPatients()
                   reset()
                 } else {
                   console.error(error)

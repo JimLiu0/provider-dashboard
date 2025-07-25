@@ -72,11 +72,12 @@ export default function PatientTable() {
   const [operator, setOperator] = useState('contains')
   const [filterValue, setFilterValue] = useState('')
 
+  const fetchPatients = async () => {
+    const { data } = await supabase.from('patients').select('*')
+    setPatients(data ?? [])
+  }
+
   useEffect(() => {
-    const fetchPatients = async () => {
-      const { data } = await supabase.from('patients').select('*')
-      setPatients(data ?? [])
-    }
     fetchPatients()
   }, [])
 
@@ -93,7 +94,7 @@ export default function PatientTable() {
         return Object.entries(p).some(([key, val]) => {
           if (key === 'date_of_birth' || key === 'id') return false
           if (key === 'created_at') {
-            const dateStr = new Date(val).toISOString().split('T')[0]
+            const dateStr = new Date(val as string).toISOString().split('T')[0]
             return dateStr.includes(target)
           }
           return String(val ?? '').toLowerCase().includes(target)

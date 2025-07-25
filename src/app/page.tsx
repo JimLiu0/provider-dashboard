@@ -1,11 +1,16 @@
 'use client';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import AddPatientModal from "./components/AddPatientModal";
 import { Toaster } from 'react-hot-toast'
 import PatientTable from './components/PatientTable';
 
 export default function Home() {
   const [open, setOpen] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const refreshPatients = useCallback(() => {
+    setRefreshKey(prev => prev + 1);
+  }, []);
 
   return (
     <div>
@@ -13,8 +18,13 @@ export default function Home() {
       <button onClick={() => setOpen(true)}>
         Add patient
       </button>
-      <PatientTable />
-      <AddPatientModal isOpen={open} onClose={() => setOpen(false)} onSuccess={() => console.log('success')}/>
+      <PatientTable key={refreshKey} />
+      <AddPatientModal 
+        isOpen={open} 
+        onClose={() => setOpen(false)} 
+        onSuccess={() => console.log('success')}
+        refreshPatients={refreshPatients}
+      />
     </div>
   );
 }
