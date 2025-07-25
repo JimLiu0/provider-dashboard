@@ -64,19 +64,32 @@ export default function AddPatientModal({
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50"
+      className="fixed inset-0 bg-gray bg-opacity-50 flex justify-center items-center z-50 p-4"
       tabIndex={-1}
       onKeyDown={handleKeyDown}
     >
-      <div className="bg-white rounded-xl p-6 w-[80vw]">
-        <h2 className="text-xl font-bold mb-4">Add New Patient</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-          <div className="grid grid-cols-6 gap-4">
+      <div className="bg-white rounded-xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4">
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-bold text-gray-900">Add New Patient</h2>
+            <button 
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-600 transition-colors duration-200"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
+          <div className="grid grid-cols-6 gap-6">
             {/* Personal Info */}
             <div className="col-span-2 flex flex-col">
-              <label className="mb-1">First Name</label>
+              <label className="mb-2 text-sm font-medium text-gray-700">First Name</label>
               <input
-                className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                 placeholder="First Name"
                 {...firstNameRegister}
                 ref={(e) => {
@@ -84,40 +97,40 @@ export default function AddPatientModal({
                   inputRef.current = e
                 }}
               />
-              {errors.first_name && <p className="text-red-500 text-sm">Required</p>}
+              {errors.first_name && <p className="text-red-500 text-sm mt-1">Required</p>}
             </div>
             <div className="col-span-2 flex flex-col">
-              <label className="mb-1">Middle Name</label>
+              <label className="mb-2 text-sm font-medium text-gray-700">Middle Name</label>
               <input
-                className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                 placeholder="Middle Name"
                 {...register('middle_name')}
               />
               {/* No validation message for middle_name since it's optional */}
             </div>
             <div className="col-span-2 flex flex-col">
-              <label className="mb-1">Last Name</label>
+              <label className="mb-2 text-sm font-medium text-gray-700">Last Name</label>
               <input
-                className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                 placeholder="Last Name"
                 {...register('last_name')}
               />
-              {errors.last_name && <p className="text-red-500 text-sm">Required</p>}
+              {errors.last_name && <p className="text-red-500 text-sm mt-1">Required</p>}
             </div>
 
             <div className="col-span-3 flex flex-col">
-              <label className="mb-1">Date of Birth</label>
+              <label className="mb-2 text-sm font-medium text-gray-700">Date of Birth</label>
               <input
                 type="date"
-                className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                 {...register('date_of_birth')}
               />
-              {errors.date_of_birth && <p className="text-red-500 text-sm">{errors.date_of_birth.message}</p>}
+              {errors.date_of_birth && <p className="text-red-500 text-sm mt-1">{errors.date_of_birth.message}</p>}
             </div>
             <div className="col-span-3 flex flex-col">
-              <label className="mb-1">Status</label>
+              <label className="mb-2 text-sm font-medium text-gray-700">Status</label>
               <select
-                className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                 {...register('status')}
               >
                 <option value="">Select Status</option>
@@ -126,32 +139,32 @@ export default function AddPatientModal({
                 <option>Active</option>
                 <option>Churned</option>
               </select>
-              {errors.status && <p className="text-red-500 text-sm">Required</p>}
+              {errors.status && <p className="text-red-500 text-sm mt-1">Required</p>}
             </div>
 
             {/* Address */}
             <div className="col-span-6 flex flex-col">
-              <label className="mb-1">Street Address</label>
+              <label className="mb-2 text-sm font-medium text-gray-700">Street Address</label>
               <input
-                className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                 placeholder="Street Address"
                 {...register('street_address')}
               />
-              {errors.street_address && <p className="text-red-500 text-sm">Required</p>}
+              {errors.street_address && <p className="text-red-500 text-sm mt-1">Required</p>}
             </div>
             <div className="col-span-2 flex flex-col">
-              <label className="mb-1">City</label>
+              <label className="mb-2 text-sm font-medium text-gray-700">City</label>
               <input
-                className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                 placeholder="City"
                 {...register('city')}
               />
-              {errors.city && <p className="text-red-500 text-sm">Required</p>}
+              {errors.city && <p className="text-red-500 text-sm mt-1">Required</p>}
             </div>
             <div className="col-span-2 flex flex-col">
-              <label className="mb-1">State</label>
+              <label className="mb-2 text-sm font-medium text-gray-700">State</label>
               <select
-                className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                 {...register('state')}
               >
                 <option value="">Select State</option>
@@ -206,18 +219,18 @@ export default function AddPatientModal({
                 <option value="Wisconsin">Wisconsin</option>
                 <option value="Wyoming">Wyoming</option>
               </select>
-              {errors.state && <p className="text-red-500 text-sm">Required</p>}
+              {errors.state && <p className="text-red-500 text-sm mt-1">Required</p>}
             </div>
             <div className="col-span-2 flex flex-col">
-              <label className="mb-1">Zip Code</label>
+              <label className="mb-2 text-sm font-medium text-gray-700">Zip Code</label>
               <input
                 type="tel"
-                className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                 placeholder="Zip Code"
                 {...register('zip_code')}
               />
               {errors.zip_code && (
-                <p className="text-red-500 text-sm">
+                <p className="text-red-500 text-sm mt-1">
                   {errors.zip_code.message ?? 'Required'}
                 </p>
               )}
@@ -225,18 +238,18 @@ export default function AddPatientModal({
 
             {/* Notes */}
             <div className="col-span-6 row-span-3 flex flex-col">
-              <label className="mb-1">Notes</label>
+              <label className="mb-2 text-sm font-medium text-gray-700">Notes</label>
               <textarea
                 placeholder="Notes"
-                className="min-h-[80px] resize-y border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 w-full"
+                className="min-h-[80px] resize-y border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
                 {...register('notes')}
               />
-              {errors.notes && <p className="text-red-500 text-sm">Required</p>}
+              {errors.notes && <p className="text-red-500 text-sm mt-1">Required</p>}
             </div>
           </div>
 
-          <div className="flex justify-end gap-2 pt-2">
-            <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+          <div className="flex justify-end gap-3 pt-6 border-t border-gray-200">
+            <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200">
               Add Patient
             </button>
             <button
@@ -256,11 +269,11 @@ export default function AddPatientModal({
                   console.error(error)
                 }
               }}
-              className="bg-gray-100 text-black px-4 py-2 rounded"
+              className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-medium transition-colors duration-200"
             >
               Add &amp; Keep Open
             </button>
-            <button type="button" onClick={onClose} className="text-gray-500">
+            <button type="button" onClick={onClose} className="text-gray-500 hover:text-gray-700 px-6 py-2 rounded-lg font-medium transition-colors duration-200">
               Cancel
             </button>
           </div>
