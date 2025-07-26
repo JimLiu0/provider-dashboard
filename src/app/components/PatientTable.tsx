@@ -1,16 +1,17 @@
 'use client'
 
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, useCallback } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import { useReactTable, getCoreRowModel, getSortedRowModel, flexRender, createColumnHelper } from '@tanstack/react-table'
+import { Patient } from '../types/patient'
 
-const caseInsensitiveSort = (rowA: any, rowB: any, columnId: string) => {
+const caseInsensitiveSort = (rowA: { getValue: (columnId: string) => string }, rowB: { getValue: (columnId: string) => string }, columnId: string) => {
   const a = rowA.getValue(columnId)?.toLowerCase() ?? ''
   const b = rowB.getValue(columnId)?.toLowerCase() ?? ''
   return a.localeCompare(b)
 }
 
-const columnHelper = createColumnHelper<any>()
+const columnHelper = createColumnHelper<Patient>()
 
 const columns = [
   columnHelper.accessor('first_name', {
@@ -59,14 +60,14 @@ const columns = [
     header: 'Created',
     cell: info => {
       const full = info.getValue()
-      const date = new Date(full).toISOString().split('T')[0]
-      return <div title={full}>{date}</div>
+      const date = new Date(full as string).toISOString().split('T')[0]
+      return <div title={full as string}>{date}</div>
     }
   }),
 ]
 
 export default function PatientTable() {
-  const [patients, setPatients] = useState<any[]>([])
+  const [patients, setPatients] = useState<Patient[]>([])
   const [sorting, setSorting] = useState([{ id: 'created_at', desc: true }])
   const [filterField, setFilterField] = useState('all')
   const [operator, setOperator] = useState('contains')
@@ -82,7 +83,7 @@ export default function PatientTable() {
   }, [])
 
   // Filtering logic with memoization and short-circuiting
-  const filterData = (patients: any[]) => {
+  const filterData = useCallback((patients: Patient[]) => {
     // If no filter value, skip computation
     if (!filterValue) return patients
     // If patients is empty, skip computation
@@ -112,18 +113,18 @@ export default function PatientTable() {
         if (operator === '<=') return age <= num
         return false
       } else {
-        const val = String(p[filterField] ?? '').toLowerCase()
+        const val = String(p[filterField as keyof Patient] ?? '').toLowerCase()
         if (operator === 'contains') return val.includes(target)
         if (operator === 'equals') return val === target
       }
       return false
     })
-  }
+  }, [filterValue, filterField, operator])
 
   // Memoize filtered patients to avoid unnecessary computation
   const filteredPatients = useMemo(
     () => filterData(patients),
-    [patients, filterField, operator, filterValue]
+    [patients, filterData]
   )
 
   const table = useReactTable({

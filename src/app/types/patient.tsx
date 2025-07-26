@@ -12,6 +12,7 @@ const usStates = [
 ]
 
 export const patientSchema = z.object({
+  id: z.string().optional(),
   first_name: z.string().min(1),
   middle_name: z.string().optional(),
   last_name: z.string().min(1),
@@ -29,6 +30,7 @@ export const patientSchema = z.object({
   state: z.enum(usStates as [string, ...string[]], { message: 'Required' }),
   zip_code: z.string().regex(/^\d{5}$/, { message: 'Must be a 5-digit ZIP code' }),
   notes: z.string().optional(),
+  created_at: z.string().optional(),
 })
 
 export type Patient = z.infer<typeof patientSchema>
