@@ -139,11 +139,11 @@ export default function PatientTable() {
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Patient Records</h2>
-        <div className="flex items-center gap-4 mb-6">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 mb-6">
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">Patient Records</h2>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-6">
           <select
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full sm:w-auto border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             value={filterField}
             onChange={e => {
               const field = e.target.value
@@ -164,7 +164,7 @@ export default function PatientTable() {
           </select>
 
           <select
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full sm:w-auto border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             value={operator}
             onChange={e => setOperator(e.target.value)}
           >
@@ -184,7 +184,7 @@ export default function PatientTable() {
 
           <input
             type={filterField === 'age' ? 'number' : 'text'}
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm flex-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full sm:flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder={`Enter ${filterField === 'age' ? 'age' : 'value'}...`}
             value={filterValue}
             onChange={e => setFilterValue(e.target.value)}
@@ -201,7 +201,7 @@ export default function PatientTable() {
                   {headerGroup.headers.map(header => (
                     <th
                       key={header.id}
-                      className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors duration-200"
+                      className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors duration-200"
                       style={{
                         width: header.id === 'notes' ? '200px' : 
                                header.id === 'street_address' ? '150px' :
@@ -214,7 +214,7 @@ export default function PatientTable() {
                       }}
                       onClick={header.column.getToggleSortingHandler()}
                     >
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1 sm:gap-2">
                         {flexRender(header.column.columnDef.header, header.getContext())}
                         {{
                           asc: ' 🔼',
@@ -233,7 +233,7 @@ export default function PatientTable() {
                   className={`hover:bg-gray-50 transition-colors duration-200 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}
                 >
                   {row.getVisibleCells().map(cell => (
-                    <td key={cell.id} className="px-6 py-4 text-sm text-gray-900">
+                    <td key={cell.id} className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-900">
                       <div className="max-w-xs break-words">
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </div>
